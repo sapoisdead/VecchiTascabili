@@ -19,4 +19,5 @@ public class PlayerMovStats : ScriptableObject
     public float GroundDetectionRayLength = 0.02f;
     public float HeadDetectionRayLength = 0.02f;
     [Range(0f, 1f)]public float HeadWidth = 0.75f;
+    public bool DebugShowIsGroundedBox; 
 }
