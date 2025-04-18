@@ -1,5 +1,5 @@
 {
-    "name": "Input",
+    "name": "PlayerInput",
     "maps": [
         {
             "name": "Player",
@@ -26,7 +26,7 @@
                 {
                     "name": "Run",
                     "type": "Button",
-                    "id": "18613780-addc-4f44-879a-d89900937665",
+                    "id": "dd1ad65f-b995-4618-99e2-c8635db9cd31",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -172,14 +172,14 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "bda224ad-ae12-48a9-bc9e-9b4bf4404696",
+                    "id": "1f9405ba-8b92-454d-8173-c76772a7f0ee",
                     "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",

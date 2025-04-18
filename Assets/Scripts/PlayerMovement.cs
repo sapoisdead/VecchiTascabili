@@ -16,15 +16,6 @@ public class PlayerMovement : MonoBehaviour
     private bool _isGrounded;
     private bool _bumpedHead;
 
-    private void Start()
-    {
-        GameInput.Instance.OnJump += Handle_OnJump;
-    }
-
-    private void OnDisable()
-    {
-        GameInput.Instance.OnJump -= Handle_OnJump;
-    }
 
     private void Awake()
     {
@@ -34,19 +25,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isGrounded)
-        {
-            Move(_moveStats.GroundAcceleration, _moveStats.GroundDeceleration, GameInput.Instance.MoveDir);
-        }
-        CollisionChecks();
-        if (_isGrounded)
-        {
-            Move(_moveStats.GroundAcceleration, _moveStats.GroundDeceleration, GameInput.Instance.MoveDir);
-        }
-        else
-        {
-            Move(_moveStats.AirAcceleration, _moveStats.AirDeceleration, GameInput.Instance.MoveDir);
-        }
+        //if (_isGrounded)
+        //{
+        //    Move(_moveStats.GroundAcceleration, _moveStats.GroundDeceleration, GameInput.Instance.MoveDir);
+        //}
+        //CollisionChecks();
+        //if (_isGrounded)
+        //{
+        //    Move(_moveStats.GroundAcceleration, _moveStats.GroundDeceleration, GameInput.Instance.MoveDir);
+        //}
+        //else
+        //{
+        //    Move(_moveStats.AirAcceleration, _moveStats.AirDeceleration, GameInput.Instance.MoveDir);
+        //}
     }
 
     private void Handle_OnJump(object sender, System.EventArgs e)
@@ -63,11 +54,11 @@ public class PlayerMovement : MonoBehaviour
             FlipSprite(moveInput);
 
             Vector2 targetVelocity = Vector2.zero;
-            if (GameInput.Instance.IsRunHeld)
-            {
-                targetVelocity = new Vector2(moveInput.x, 0f) * _moveStats.MaxRunSpeed;
-            }
-            else { targetVelocity = new Vector2(moveInput.x, 0f) * _moveStats.MaxWalkSpeed; }
+            //if (GameInput.Instance.IsRunHeld)
+            //{
+            //    targetVelocity = new Vector2(moveInput.x, 0f) * _moveStats.MaxRunSpeed;
+            //}
+            //else { targetVelocity = new Vector2(moveInput.x, 0f) * _moveStats.MaxWalkSpeed; }
 
             _moveVelocity = Vector2.Lerp(_moveVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
             _rb.velocity = new Vector2(_moveVelocity.x, _rb.velocity.y);

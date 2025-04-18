@@ -5,12 +5,11 @@ using System;
 public class GameInput : MonoBehaviour
 {
     public static GameInput Instance { get; private set; }
-    private Input _input;
+    private PlayerInput _input;
 
-    public event EventHandler OnJump;
-
-    public Vector2 MoveDir { get; private set; }
-    public bool IsRunHeld { get; private set; } 
+    public event EventHandler<MoveArgs> OnMove; 
+    public event EventHandler OnRunPressed, OnRunReleased;
+    public event EventHandler OnJumpPressed, OnJumpReleased;
 
     private void Awake()
     {
@@ -19,27 +18,70 @@ public class GameInput : MonoBehaviour
             Debug.LogError("There's more than one GAMEINPUT in the current scene");
             Destroy(gameObject);
         }
-        else { Instance = this; DontDestroyOnLoad(gameObject); }
-        _input = new Input();
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        _input = new PlayerInput();
+    }
+
+    private void OnEnable()
+    {
         _input.Enable();
 
-        _input.Player.Jump.performed += Jump_performed;
+        _input.Player.Move.performed += OnMove_performed;
+        _input.Player.Move.canceled += OnMove_canceled;
+        _input.Player.Run.started += OnRun_started;
+        _input.Player.Run.canceled += OnRun_canceled;
+        _input.Player.Jump.started += OnJump_started;
+        _input.Player.Jump.canceled += OnJump_canceled;
     }
 
-    private void Update()
+    private void OnMove_performed(InputAction.CallbackContext obj)
     {
-        MoveDir = _input.Player.Move.ReadValue<Vector2>();
-        IsRunHeld = _input.Player.Run.IsPressed(); 
+        OnMove?.Invoke(this, new MoveArgs(obj.ReadValue<Vector2>().normalized));
     }
-
-    private void Jump_performed(InputAction.CallbackContext obj)
+    private void OnMove_canceled(InputAction.CallbackContext obj)
     {
-        OnJump?.Invoke(this, EventArgs.Empty);
+        OnMove?.Invoke(this, new MoveArgs(Vector2.zero));
     }
-
-    public Vector2 GetMoveDirNormalized()
+    private void OnRun_started(InputAction.CallbackContext obj)
     {
-        return MoveDir.normalized;
+        OnRunPressed?.Invoke(this, EventArgs.Empty);
     }
+    private void OnRun_canceled(InputAction.CallbackContext obj)
+    {
+        OnRunReleased?.Invoke(this, EventArgs.Empty);
+    }
+    private void OnJump_started(InputAction.CallbackContext obj)
+    {
+        OnJumpPressed?.Invoke(this, EventArgs.Empty);
+    }
+    private void OnJump_canceled(InputAction.CallbackContext obj)
+    {
+        OnJumpReleased?.Invoke(this, EventArgs.Empty);
+    }
+}
 
+public sealed class MoveArgs : EventArgs
+{
+    public Vector2 MoveDir { get; }
+
+    public MoveArgs(Vector2 moveDir)
+    {
+        MoveDir = moveDir; 
+    }
+}
+public sealed class JumpArgs : EventArgs
+{
+    public bool IsJumping { get; }
+    public uint Stamina { get; }
+
+    public JumpArgs(bool isJumping, uint stamina)
+    {
+        IsJumping = isJumping;
+        Stamina = stamina;
+    }
 }
