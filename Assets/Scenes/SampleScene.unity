@@ -189,12 +189,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 341937973}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f370d719b705f45a7af11c7c9942111f, type: 3}
+  m_Script: {fileID: 11500000, guid: 78c11021a0669404fa957f183e89c312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveStats: {fileID: 11400000, guid: e23e27c0634cc4d6cb2ba6e271005805, type: 2}
-  _feetColl: {fileID: 451973892}
-  _bodyColl: {fileID: 961509237}
+  _movementStats: {fileID: 11400000, guid: e23e27c0634cc4d6cb2ba6e271005805, type: 2}
+  feetColl: {fileID: 451973892}
+  bodyColl: {fileID: 961509237}
 --- !u!1 &451973890
 GameObject:
   m_ObjectHideFlags: 0

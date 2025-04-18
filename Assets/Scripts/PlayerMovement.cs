@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("References")]
-    public PlayerMovStats _moveStats;
+    public PlayerMovementStats _moveStats;
     [SerializeField] private Collider2D _feetColl;
     [SerializeField] private Collider2D _bodyColl;
     private Rigidbody2D _rb;
@@ -25,19 +25,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if (_isGrounded)
-        //{
-        //    Move(_moveStats.GroundAcceleration, _moveStats.GroundDeceleration, GameInput.Instance.MoveDir);
-        //}
-        //CollisionChecks();
-        //if (_isGrounded)
-        //{
-        //    Move(_moveStats.GroundAcceleration, _moveStats.GroundDeceleration, GameInput.Instance.MoveDir);
-        //}
-        //else
-        //{
-        //    Move(_moveStats.AirAcceleration, _moveStats.AirDeceleration, GameInput.Instance.MoveDir);
-        //}
+        CollisionChecks();
+        if (_isGrounded)
+        {
+            Move(_moveStats.GroundAcceleration, _moveStats.GroundDeceleration, GameInput.Instance.MoveDir);
+        }
+        else
+        {
+            Move(_moveStats.AirAcceleration, _moveStats.AirDeceleration, GameInput.Instance.MoveDir);
+        }
     }
 
     private void Handle_OnJump(object sender, System.EventArgs e)
@@ -71,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #endregion
+
 
     #region CollisionChecks
     private void CollisionChecks()

@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName ="PlayerStats", menuName ="PlayerMovementStats")]
-public class PlayerMovStats : ScriptableObject
+public class PlayerMovementStats : ScriptableObject
 {
     [Header("Walk")]
     [Range(1f, 100f)] public float MaxWalkSpeed = 12.5f;

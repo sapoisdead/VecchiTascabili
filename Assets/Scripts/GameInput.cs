@@ -2,27 +2,45 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
+/// <summary>
+/// Wrapper/adapter dell'Input System che fornisce sia eventi che valori "bufferizzati"
+/// (polling) per gli stati del giocatore.
+/// </summary>
 public class GameInput : MonoBehaviour
 {
     public static GameInput Instance { get; private set; }
+
+    // InputActions generato da Unity (Assets → Input Actions)
     private PlayerInput _input;
 
-    public event EventHandler<MoveArgs> OnMove; 
+    // ─────────────────────────────────────────────────────────────────────────────
+    //  Buffered properties (da leggere in qualsiasi Update/FixedUpdate)
+    // ─────────────────────────────────────────────────────────────────────────────
+    public Vector2 MoveDir { get; private set; }      // direzione normalizzata (x,y)
+    public bool IsRunHeld { get; private set; }    // true finché "Run" è premuto
+    public bool IsJumpPressed { get; private set; }    // true SOLO nel frame in cui parte il salto
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    //  Eventi opzionali (se vuoi logica completamente event‑driven)
+    // ─────────────────────────────────────────────────────────────────────────────
+    public event EventHandler<MoveArgs> OnMove;
     public event EventHandler OnRunPressed, OnRunReleased;
     public event EventHandler OnJumpPressed, OnJumpReleased;
 
+    // ════════════════════════════════════════════════════════════════════════════
+    #region Unity lifecycle
+    // ════════════════════════════════════════════════════════════════════════════
     private void Awake()
     {
+        // Singleton guard
         if (Instance != null)
         {
-            Debug.LogError("There's more than one GAMEINPUT in the current scene");
+            Debug.LogError("There's more than one GameInput in the scene!");
             Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         _input = new PlayerInput();
     }
@@ -31,54 +49,82 @@ public class GameInput : MonoBehaviour
     {
         _input.Enable();
 
+        // Mapping callbacks → buffer + eventi
         _input.Player.Move.performed += OnMove_performed;
         _input.Player.Move.canceled += OnMove_canceled;
+
         _input.Player.Run.started += OnRun_started;
         _input.Player.Run.canceled += OnRun_canceled;
+
         _input.Player.Jump.started += OnJump_started;
         _input.Player.Jump.canceled += OnJump_canceled;
     }
 
-    private void OnMove_performed(InputAction.CallbackContext obj)
+    private void OnDisable()
     {
-        OnMove?.Invoke(this, new MoveArgs(obj.ReadValue<Vector2>().normalized));
+        _input.Disable();
     }
-    private void OnMove_canceled(InputAction.CallbackContext obj)
+
+    private void LateUpdate()
     {
-        OnMove?.Invoke(this, new MoveArgs(Vector2.zero));
+        // Reset one‑frame flags
+        IsJumpPressed = false;
     }
-    private void OnRun_started(InputAction.CallbackContext obj)
+    #endregion
+
+    // ════════════════════════════════════════════════════════════════════════════
+    #region Callbacks
+    // ════════════════════════════════════════════════════════════════════════════
+    private void OnMove_performed(InputAction.CallbackContext ctx)
     {
+        MoveDir = ctx.ReadValue<Vector2>().normalized;
+        OnMove?.Invoke(this, new MoveArgs(MoveDir));
+    }
+
+    private void OnMove_canceled(InputAction.CallbackContext ctx)
+    {
+        MoveDir = Vector2.zero;
+        OnMove?.Invoke(this, new MoveArgs(MoveDir));
+    }
+
+    private void OnRun_started(InputAction.CallbackContext ctx)
+    {
+        IsRunHeld = true;
         OnRunPressed?.Invoke(this, EventArgs.Empty);
     }
-    private void OnRun_canceled(InputAction.CallbackContext obj)
+
+    private void OnRun_canceled(InputAction.CallbackContext ctx)
     {
+        IsRunHeld = false;
         OnRunReleased?.Invoke(this, EventArgs.Empty);
     }
-    private void OnJump_started(InputAction.CallbackContext obj)
+
+    private void OnJump_started(InputAction.CallbackContext ctx)
     {
+        IsJumpPressed = true;
         OnJumpPressed?.Invoke(this, EventArgs.Empty);
     }
-    private void OnJump_canceled(InputAction.CallbackContext obj)
+
+    private void OnJump_canceled(InputAction.CallbackContext ctx)
     {
         OnJumpReleased?.Invoke(this, EventArgs.Empty);
     }
+    #endregion
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+//  Event argument helper classes
+// ─────────────────────────────────────────────────────────────────────────────
 public sealed class MoveArgs : EventArgs
 {
     public Vector2 MoveDir { get; }
-
-    public MoveArgs(Vector2 moveDir)
-    {
-        MoveDir = moveDir; 
-    }
+    public MoveArgs(Vector2 dir) => MoveDir = dir;
 }
+
 public sealed class JumpArgs : EventArgs
 {
     public bool IsJumping { get; }
     public uint Stamina { get; }
-
     public JumpArgs(bool isJumping, uint stamina)
     {
         IsJumping = isJumping;
