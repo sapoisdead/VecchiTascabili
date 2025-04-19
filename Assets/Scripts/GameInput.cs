@@ -19,7 +19,7 @@ public class GameInput : MonoBehaviour
     public Vector2 MoveDir { get; private set; }      // direzione normalizzata (x,y)
     public bool IsRunHeld { get; private set; }    // true finché "Run" è premuto
     public bool IsJumpPressed { get; private set; }    // true SOLO nel frame in cui parte il salto
-
+    public bool IsJumpReleased { get; private set; }
     // ─────────────────────────────────────────────────────────────────────────────
     //  Eventi opzionali (se vuoi logica completamente event‑driven)
     // ─────────────────────────────────────────────────────────────────────────────
@@ -108,6 +108,7 @@ public class GameInput : MonoBehaviour
     private void OnJump_canceled(InputAction.CallbackContext ctx)
     {
         OnJumpReleased?.Invoke(this, EventArgs.Empty);
+        IsJumpReleased = true;
     }
     #endregion
 }
