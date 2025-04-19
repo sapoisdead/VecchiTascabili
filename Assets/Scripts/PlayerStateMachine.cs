@@ -45,7 +45,7 @@ public class PlayerStateMachine : MonoBehaviour
 
         IdleState ??= new PlayerIdle(this);
         MoveState ??= new PlayerMove(this);
-        //JumpState ??= new PlayerJump(this);
+        JumpState ??= new PlayerJump(this);
 
         ChangeState(IdleState);
     }

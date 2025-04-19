@@ -69,6 +69,7 @@ public class GameInput : MonoBehaviour
     {
         // Reset one‑frame flags
         IsJumpPressed = false;
+        IsJumpReleased = false;
     }
     #endregion
 

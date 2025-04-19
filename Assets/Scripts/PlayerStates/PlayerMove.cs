@@ -15,17 +15,21 @@ public class PlayerMove : BasePlayerState
 
     public override void Update()
     {
-        // 1) Transizione verso Idle se il giocatore smette di muoversi
+        if (!PSM.IsGrounded)
+        {
+            PSM.ChangeState(PSM.JumpState);
+            return;
+        }
+
         if (Input.MoveDir == Vector2.zero)
         {
             PSM.ChangeState(PSM.IdleState);
             return;
         }
 
-        // 2) Transizione verso Jump se parte il salto ed è a terra
         if (Input.IsJumpPressed && PSM.IsGrounded)
         {
-            //PSM.ChangeState(PSM.JumpState);
+            PSM.ChangeState(PSM.JumpState);
             return;
         }
     }

@@ -14,18 +14,23 @@ public class PlayerIdle : BasePlayerState
 
     public override void Update()
     {
+        if (!PSM.IsGrounded)
+        {
+            PSM.ChangeState(PSM.JumpState);
+            return;
+        }
+
         if (Input.MoveDir != Vector2.zero)
         {
             PSM.ChangeState(PSM.MoveState);
             return;
         }
 
-        // 2) Transizione verso Jump (se implementato)
-        //if (Input.JumpDown && PSM.IsGrounded)
-        //{
-        //    PSM.ChangeState(PSM.JumpState);
-        //    return;
-        //}
+        if (Input.IsJumpPressed && PSM.IsGrounded)
+        {
+            PSM.ChangeState(PSM.JumpState);
+            return;
+        }
     }
 
     public override void FixedUpdate()
