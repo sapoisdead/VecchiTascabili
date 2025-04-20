@@ -1,18 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class IHealth : MonoBehaviour
+public interface IHealth
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    event Action<float> OnHealthChanged;
+    event Action OnDeath; 
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    float CurrentHP { get; } // -> punti di vita correnti
+    float MaxHP { get; } // -> punti di vita massimi
+    bool IsAlive { get; }
+
+    void TakeDamage(float amount);
+    void Heal(float amount);
 }
