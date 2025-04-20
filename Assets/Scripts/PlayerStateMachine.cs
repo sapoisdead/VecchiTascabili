@@ -3,8 +3,8 @@ using UnityEngine;
 public class PlayerStateMachine : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private PlayerMovementStats _movementStats;
-    public PlayerMovementStats MovementStats => _movementStats;
+    [SerializeField] private SOMovementStats _movementStats;
+    public SOMovementStats MovementStats => _movementStats;
 
     public GameInput Input { get; private set; }
     public Animator Animator { get; private set; }

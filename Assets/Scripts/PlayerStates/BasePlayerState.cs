@@ -6,7 +6,7 @@ public abstract class BasePlayerState : IPlayerState
 
     //  Accessors “live” invece di copie
     protected GameInput Input => PSM.Input;
-    protected PlayerMovementStats Stats => PSM.MovementStats;
+    protected SOMovementStats Stats => PSM.MovementStats;
     protected Rigidbody2D RB => PSM.RB;
 
     protected Vector2 MoveVelocity

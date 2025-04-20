@@ -7,9 +7,9 @@ public class CollisionChecker
 {
     private readonly Collider2D _feetCollider;
     private readonly Collider2D _bodyCollider;
-    private readonly PlayerMovementStats _stats;
+    private readonly SOMovementStats _stats;
 
-    public CollisionChecker(Collider2D feetCollider, Collider2D bodyCollider, PlayerMovementStats stats)
+    public CollisionChecker(Collider2D feetCollider, Collider2D bodyCollider, SOMovementStats stats)
     {
         _feetCollider = feetCollider;
         _bodyCollider = bodyCollider;
