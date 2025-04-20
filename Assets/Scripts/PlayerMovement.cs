@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        BumpedHead();
         CollisionChecks();
         if (_isGrounded)
         {
@@ -62,12 +63,9 @@ public class PlayerMovement : MonoBehaviour
         {
             Move(_moveStats.AirAcceleration, _moveStats.AirDeceleration, GameInput.Instance.MoveDir);
         }
+        Jump();
     }
 
-    private void Handle_OnJump(object sender, System.EventArgs e)
-    {
-        _rb.AddForce(Vector2.up * 20f, ForceMode2D.Impulse);
-    }
 
     #region Movement
 

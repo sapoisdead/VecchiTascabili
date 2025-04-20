@@ -2,23 +2,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
-/// <summary>
-/// Wrapper/adapter dell'Input System che fornisce sia eventi che valori "bufferizzati"
-/// (polling) per gli stati del giocatore.
-/// </summary>
 public class GameInput : MonoBehaviour
 {
     public static GameInput Instance { get; private set; }
 
-    // InputActions generato da Unity (Assets → Input Actions)
     private PlayerInput _input;
 
     // ─────────────────────────────────────────────────────────────────────────────
     //  Buffered properties (da leggere in qualsiasi Update/FixedUpdate)
     // ─────────────────────────────────────────────────────────────────────────────
-    public Vector2 MoveDir { get; private set; }      // direzione normalizzata (x,y)
-    public bool IsRunHeld { get; private set; }    // true finché "Run" è premuto
-    public bool IsJumpPressed { get; private set; }    // true SOLO nel frame in cui parte il salto
+    public Vector2 MoveDir { get; private set; }      
+    public bool IsRunHeld { get; private set; }   
+    public bool IsJumpPressed { get; private set; }   
     public bool IsJumpReleased { get; private set; }
     // ─────────────────────────────────────────────────────────────────────────────
     //  Eventi opzionali (se vuoi logica completamente event‑driven)

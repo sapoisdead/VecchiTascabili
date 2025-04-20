@@ -1,8 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Stato "Move": gestisce camminata e corsa a terra / in aria.
-/// </summary>
 public class PlayerMove : BasePlayerState
 {
     public PlayerMove(PlayerStateMachine psm) : base(psm) { }
@@ -17,7 +14,7 @@ public class PlayerMove : BasePlayerState
     {
         if (!PSM.IsGrounded)
         {
-            PSM.ChangeState(PSM.JumpState);
+            PSM.ChangeState(PSM.FallState);
             return;
         }
 
@@ -45,7 +42,6 @@ public class PlayerMove : BasePlayerState
 
     public override void Exit() { /* nessuna logica particolare */ }
 
-    // ──────────────────────────────────────────────────────────────── MOVIMENTO
     private void Move(float acceleration, float deceleration, Vector2 moveInput)
     {
         if (moveInput != Vector2.zero)
