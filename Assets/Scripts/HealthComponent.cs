@@ -1,15 +1,20 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
-public class HealthComponent : MonoBehaviour, IHealth
+public class HealthComponent : MonoBehaviour, IHealth, IDamageable
 {
     [SerializeField] private float _maxHP = 100f;
+    [SerializeField] private float _invulnerableDuration = 0.5f;
+
     public float CurrentHP { get; private set; }
     public float MaxHP => _maxHP;
     public bool IsAlive => CurrentHP > 0f;
 
     public event Action<float> OnHealthChanged;
     public event Action OnDeath;
+
+    private bool _isInvulnerable;
 
     private void Awake()
     {
@@ -18,10 +23,16 @@ public class HealthComponent : MonoBehaviour, IHealth
 
     public void TakeDamage(float amount)
     {
-        if (!IsAlive) return;
+        if (!IsAlive || _isInvulnerable)
+            return;
+
         CurrentHP = Mathf.Clamp(CurrentHP - amount, 0f, _maxHP);
         OnHealthChanged?.Invoke(CurrentHP);
-        if (!IsAlive) OnDeath?.Invoke();
+
+        StartCoroutine(InvulnerabilityCoroutine());
+
+        if (!IsAlive)
+            OnDeath?.Invoke();
     }
 
     public void Heal(float amount)
@@ -29,5 +40,17 @@ public class HealthComponent : MonoBehaviour, IHealth
         if (!IsAlive) return;
         CurrentHP = Mathf.Clamp(CurrentHP + amount, 0f, _maxHP);
         OnHealthChanged?.Invoke(CurrentHP);
+    }
+
+    public void TakeDamage(float amount, GameObject source)
+    {
+        TakeDamage(amount);
+    }
+
+    private IEnumerator InvulnerabilityCoroutine()
+    {
+        _isInvulnerable = true;
+        yield return new WaitForSeconds(_invulnerableDuration);
+        _isInvulnerable = false;
     }
 }
