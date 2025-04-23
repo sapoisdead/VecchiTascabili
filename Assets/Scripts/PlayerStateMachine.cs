@@ -11,10 +11,12 @@ public class PlayerStateMachine : MonoBehaviour
     public CollisionChecker CollisionChecker { get; private set; }
 
     [Header("Colliders")]
-    [SerializeField] private Collider2D feetColl;
-    [SerializeField] private Collider2D bodyColl;
+    [SerializeField] private Collider2D _feetColl;
+    public Collider2D FeetColl => _feetColl;
+    [SerializeField] private Collider2D _bodyColl;
+    public Collider2D BodyColl => _bodyColl;
 
-    public Rigidbody2D RB { get; private set; }
+    public Rigidbody2D Rb { get; private set; }
     public Vector2 MoveVelocity { get; set; }
 
     public bool IsFacingRight { get; private set; } = true;
@@ -31,7 +33,7 @@ public class PlayerStateMachine : MonoBehaviour
     #region Unity lifecycle
     private void Awake()
     {
-        RB = GetComponent<Rigidbody2D>();
+        Rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -40,7 +42,7 @@ public class PlayerStateMachine : MonoBehaviour
         Animator = GetComponent<Animator>();
 
         // Initialize collision checker
-        CollisionChecker = new CollisionChecker(feetColl, bodyColl, MovementStats);
+        CollisionChecker = new CollisionChecker(this);
 
         IdleState ??= new PlayerIdle(this);
         MoveState ??= new PlayerMove(this);

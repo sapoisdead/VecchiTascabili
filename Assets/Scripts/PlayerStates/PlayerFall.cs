@@ -50,9 +50,9 @@ public class PlayerFall : BasePlayerState
     public override void FixedUpdate()
     {
         // Apply gravity
-        float newY = RB.velocity.y + Stats.Gravity * Time.fixedDeltaTime;
+        float newY = Rb.velocity.y + Stats.Gravity * Time.fixedDeltaTime;
         newY = Mathf.Clamp(newY, -Stats.MaxFallSpeed, float.MaxValue);
-        RB.velocity = new Vector2(RB.velocity.x, newY);
+        Rb.velocity = new Vector2(Rb.velocity.x, newY);
     }
 
     public override void Exit() { }

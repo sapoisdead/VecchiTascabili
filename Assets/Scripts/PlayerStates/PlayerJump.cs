@@ -27,7 +27,7 @@ public class PlayerJump : BasePlayerState
 
         _phase = JumpPhase.Rising;
         _verticalVelocity = Stats.InitialJumpVelocity;
-        RB.velocity = new Vector2(RB.velocity.x, _verticalVelocity);
+        Rb.velocity = new Vector2(Rb.velocity.x, _verticalVelocity);
 
         // If released during buffer, cancel upward immediately
         if (_releasedDuringBuffer)
@@ -83,7 +83,7 @@ public class PlayerJump : BasePlayerState
 
         // Clamp and apply velocity
         _verticalVelocity = Mathf.Clamp(_verticalVelocity, -Stats.MaxFallSpeed, float.MaxValue);
-        RB.velocity = new Vector2(RB.velocity.x, _verticalVelocity);
+        Rb.velocity = new Vector2(Rb.velocity.x, _verticalVelocity);
     }
 
     public override void Exit()
@@ -98,7 +98,7 @@ public class PlayerJump : BasePlayerState
         _jumpBuffer.Reset();
         _phase = JumpPhase.Rising;
         _verticalVelocity = Stats.InitialJumpVelocity;
-        RB.velocity = new Vector2(RB.velocity.x, _verticalVelocity);
+        Rb.velocity = new Vector2(Rb.velocity.x, _verticalVelocity);
         //PSM.Animator?.Play("Jump");
     }
 

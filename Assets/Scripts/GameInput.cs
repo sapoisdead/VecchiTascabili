@@ -21,6 +21,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler<MoveArgs> OnMove;
     public event EventHandler OnRunPressed, OnRunReleased;
     public event EventHandler OnJumpPressed, OnJumpReleased;
+    public event EventHandler OnMorphPressed;
 
     // ════════════════════════════════════════════════════════════════════════════
     #region Unity lifecycle
@@ -53,6 +54,8 @@ public class GameInput : MonoBehaviour
 
         _input.Player.Jump.started += OnJump_started;
         _input.Player.Jump.canceled += OnJump_canceled;
+
+        _input.Player.Morph.started += OnMorph_started;
     }
 
     private void OnDisable()
@@ -105,6 +108,11 @@ public class GameInput : MonoBehaviour
     {
         OnJumpReleased?.Invoke(this, EventArgs.Empty);
         IsJumpReleased = true;
+    }
+
+    private void OnMorph_started(InputAction.CallbackContext ctx)
+    {
+        OnMorphPressed?.Invoke(this, EventArgs.Empty);
     }
     #endregion
 }

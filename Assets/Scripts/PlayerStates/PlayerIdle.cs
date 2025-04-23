@@ -9,7 +9,7 @@ public class PlayerIdle : BasePlayerState
         // clear horizontal
         MoveVelocity = Vector2.zero;
         // clear any leftover vertical velocity
-        RB.velocity = new Vector2(0f, Physics2D.gravity.y);
+        Rb.velocity = new Vector2(0f, Physics2D.gravity.y);
 
         // PSM.Animator?.Play("Idle");
     }
@@ -39,7 +39,7 @@ public class PlayerIdle : BasePlayerState
     {
         float decelleration = PSM.IsGrounded ? Stats.GroundDeceleration : Stats.AirDeceleration;
         MoveVelocity = Vector2.Lerp(MoveVelocity, Vector2.zero, decelleration * Time.fixedDeltaTime);
-        RB.velocity = new Vector2(MoveVelocity.x, RB.velocity.y);
+        Rb.velocity = new Vector2(MoveVelocity.x, Rb.velocity.y);
     }
 
 

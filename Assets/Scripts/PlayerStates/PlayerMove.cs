@@ -48,11 +48,11 @@ public class PlayerMove : BasePlayerState
         {
             // Velocità di destinazione in base a corsa o camminata
             float maxSpeed = Input.IsRunHeld ? Stats.MaxRunSpeed : Stats.MaxWalkSpeed;
-            Vector2 targetVelocity = new Vector2(moveInput.x * maxSpeed, RB.velocity.y);
+            Vector2 targetVelocity = new Vector2(moveInput.x * maxSpeed, Rb.velocity.y);
 
             // Interpola verso la velocità di destinazione
             MoveVelocity = Vector2.Lerp(MoveVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
-            RB.velocity = new Vector2(MoveVelocity.x, RB.velocity.y);
+            Rb.velocity = new Vector2(MoveVelocity.x, Rb.velocity.y);
 
             // Flip sprite se necessario
             PSM.FlipSprite(moveInput.x);
@@ -60,7 +60,7 @@ public class PlayerMove : BasePlayerState
         else // nessun input → decelerazione
         {
             MoveVelocity = Vector2.Lerp(MoveVelocity, Vector2.zero, deceleration * Time.fixedDeltaTime);
-            RB.velocity = new Vector2(MoveVelocity.x, RB.velocity.y);
+            Rb.velocity = new Vector2(MoveVelocity.x, Rb.velocity.y);
         }
     }
 }
