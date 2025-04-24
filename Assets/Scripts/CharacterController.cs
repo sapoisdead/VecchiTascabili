@@ -6,10 +6,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private SOMovementStats _movementStats;
     public SOMovementStats MovementStats => _movementStats;
 
-    public IInputProvider Input { get; private set; }
-    public void SetInputProvider(IInputProvider provider) => Input = provider;
-
-    public Animator Animator { get; private set; }
+    public GameInput Input { get; private set; }
     public CollisionChecker CollisionChecker { get; private set; }
 
     [Header("Colliders")]
@@ -41,7 +38,6 @@ public class CharacterController : MonoBehaviour
     protected virtual void Start()
     {
         Input = GameInput.Instance;
-        Animator = GetComponent<Animator>();
 
         // Initialize collision checker
         CollisionChecker = new CollisionChecker(this);
@@ -61,7 +57,6 @@ public class CharacterController : MonoBehaviour
 
     protected void FixedUpdate()
     {
-        // Update collision flags
         IsGrounded = CollisionChecker.IsGrounded();
         BumpedHead = CollisionChecker.BumpedHead();
 

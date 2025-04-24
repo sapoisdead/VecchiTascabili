@@ -5,7 +5,7 @@ public abstract class BasePlayerState : IPlayerState
     protected readonly CharacterController PC;
 
     //  Accessors “live” invece di copie
-    protected IInputProvider Input => PC.Input;
+    protected GameInput Input => PC.Input;
     protected SOMovementStats Stats => PC.MovementStats;
     protected Rigidbody2D Rb => PC.Rb;
 

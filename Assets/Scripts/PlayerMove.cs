@@ -4,10 +4,10 @@ public class PlayerMove : BasePlayerState
 {
     public PlayerMove(CharacterController pc) : base(pc) { }
 
-    // ───────────────────────────────────────────────────────────────────── STATO
+   
     public override void Enter()
     {
-        // Imposta animazione di movimento (se serve)
+
     }
 
     public override void Update()
