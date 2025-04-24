@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
-public class GameInput : MonoBehaviour
+public class GameInput : MonoBehaviour, IInputProvider
 {
     public static GameInput Instance { get; private set; }
 

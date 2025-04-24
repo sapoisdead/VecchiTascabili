@@ -6,11 +6,11 @@ public class CollisionChecker
     private readonly Collider2D _bodyCollider;
     private readonly SOMovementStats _stats;
 
-    public CollisionChecker(PlayerStateMachine psm)
+    public CollisionChecker(CharacterController pc)
     {
-        _feetCollider = psm.FeetColl;
-        _bodyCollider = psm.BodyColl;
-        _stats = psm.MovementStats;
+        _feetCollider = pc.FeetColl;
+        _bodyCollider = pc.BodyColl;
+        _stats = pc.MovementStats;
     }
 
     public bool IsGrounded()

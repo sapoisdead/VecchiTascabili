@@ -5,7 +5,7 @@ public class PlayerFall : BasePlayerState
     private readonly GraceTimer _coyoteTimer = new();
     private readonly GraceTimer _jumpBuffer = new();
 
-    public PlayerFall(PlayerStateMachine psm) : base(psm) { }
+    public PlayerFall(CharacterController pc) : base(pc) { }
 
     public override void Enter()
     {
@@ -24,26 +24,26 @@ public class PlayerFall : BasePlayerState
         else _jumpBuffer.Tick(Time.deltaTime);
 
         // 2) if buffered *and* landed, jump immediately
-        if (_jumpBuffer.Active && PSM.CollisionChecker.IsGrounded())
+        if (_jumpBuffer.Active && PC.CollisionChecker.IsGrounded())
         {
-            PSM.ChangeState(PSM.JumpState);
+            PC.ChangeState(PC.JumpState);
             return;
         }
 
         // 3) if pressed *during* the coyote window, jump too
         if (Input.IsJumpPressed && _coyoteTimer.Active)
         {
-            PSM.ChangeState(PSM.JumpState);
+            PC.ChangeState(PC.JumpState);
             return;
         }
 
         // 4) landing without jump: go to Move or Idle
-        if (PSM.CollisionChecker.IsGrounded())
+        if (PC.CollisionChecker.IsGrounded())
         {
             if (Input.MoveDir != Vector2.zero)
-                PSM.ChangeState(PSM.MoveState);
+                PC.ChangeState(PC.MoveState);
             else
-                PSM.ChangeState(PSM.IdleState);
+                PC.ChangeState(PC.IdleState);
         }
     }
 

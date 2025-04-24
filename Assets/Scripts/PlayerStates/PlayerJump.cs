@@ -14,7 +14,7 @@ public class PlayerJump : BasePlayerState
     private float _fastFallStartSpeed;
     private bool _releasedDuringBuffer;
 
-    public PlayerJump(PlayerStateMachine psm) : base(psm) { }
+    public PlayerJump(CharacterController pc) : base(pc) { }
 
     public override void Enter()
     {
@@ -52,9 +52,9 @@ public class PlayerJump : BasePlayerState
         }
 
         // Landing exit after ascending
-        if (_phase != JumpPhase.Rising && PSM.CollisionChecker.IsGrounded())
+        if (_phase != JumpPhase.Rising && PC.CollisionChecker.IsGrounded())
         {
-            PSM.ChangeState(PSM.IdleState);
+            PC.ChangeState(PC.IdleState);
             return;
         }
 
@@ -69,7 +69,7 @@ public class PlayerJump : BasePlayerState
     public override void FixedUpdate()
     {
         // Head bump breaks rising
-        if (_phase == JumpPhase.Rising && PSM.CollisionChecker.BumpedHead())
+        if (_phase == JumpPhase.Rising && PC.CollisionChecker.BumpedHead())
             BeginFastFall();
 
         // Phase‐based physics

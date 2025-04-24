@@ -1,12 +1,14 @@
 using UnityEngine;
 
-public class PlayerStateMachine : MonoBehaviour
+public class CharacterController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private SOMovementStats _movementStats;
     public SOMovementStats MovementStats => _movementStats;
 
-    public GameInput Input { get; private set; }
+    public IInputProvider Input { get; private set; }
+    public void SetInputProvider(IInputProvider provider) => Input = provider;
+
     public Animator Animator { get; private set; }
     public CollisionChecker CollisionChecker { get; private set; }
 
@@ -28,15 +30,15 @@ public class PlayerStateMachine : MonoBehaviour
     public PlayerJump JumpState { get; private set; }
     public PlayerFall FallState { get; private set; }
 
-    private IPlayerState _currentState;
+    protected IPlayerState _currentState;
 
     #region Unity lifecycle
-    private void Awake()
+    protected void Awake()
     {
         Rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         Input = GameInput.Instance;
         Animator = GetComponent<Animator>();
@@ -52,12 +54,12 @@ public class PlayerStateMachine : MonoBehaviour
         ChangeState(IdleState);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         _currentState?.Update();
     }
 
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
         // Update collision flags
         IsGrounded = CollisionChecker.IsGrounded();
@@ -86,4 +88,6 @@ public class PlayerStateMachine : MonoBehaviour
             IsFacingRight = !IsFacingRight;
         }
     }
+
+    public void SetMovementStats(SOMovementStats newStats) => _movementStats = newStats;
 }

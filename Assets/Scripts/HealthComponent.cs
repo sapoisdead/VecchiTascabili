@@ -53,4 +53,15 @@ public class HealthComponent : MonoBehaviour, IHealth, IDamageable
         yield return new WaitForSeconds(_invulnerableDuration);
         _isInvulnerable = false;
     }
+
+
+    //public void TakeControl()          // nell’Enem​yController
+    //{
+    //    // 1. Disabilita IA
+    //    enabled = false;               // se Update gestisce solo IA
+    //                                   // 2. Passa al GameInput
+    //    SetInputProvider(GameInput.Instance);
+    //    // 3. Cambia tag/layer, resetta vita, ecc.
+    //    gameObject.tag = "Player";
+    //}
 }

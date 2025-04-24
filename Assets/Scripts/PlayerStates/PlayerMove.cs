@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMove : BasePlayerState
 {
-    public PlayerMove(PlayerStateMachine psm) : base(psm) { }
+    public PlayerMove(CharacterController pc) : base(pc) { }
 
     // ───────────────────────────────────────────────────────────────────── STATO
     public override void Enter()
@@ -12,21 +12,21 @@ public class PlayerMove : BasePlayerState
 
     public override void Update()
     {
-        if (!PSM.IsGrounded)
+        if (!PC.IsGrounded)
         {
-            PSM.ChangeState(PSM.FallState);
+            PC.ChangeState(PC.FallState);
             return;
         }
 
         if (Input.MoveDir == Vector2.zero)
         {
-            PSM.ChangeState(PSM.IdleState);
+            PC.ChangeState(PC.IdleState);
             return;
         }
 
-        if (Input.IsJumpPressed && PSM.IsGrounded)
+        if (Input.IsJumpPressed && PC.IsGrounded)
         {
-            PSM.ChangeState(PSM.JumpState);
+            PC.ChangeState(PC.JumpState);
             return;
         }
     }
@@ -34,8 +34,8 @@ public class PlayerMove : BasePlayerState
     public override void FixedUpdate()
     {
         // Calcola parametri a seconda che il player sia a terra o in aria
-        float acc = PSM.IsGrounded ? Stats.GroundAcceleration : Stats.AirAcceleration;
-        float dec = PSM.IsGrounded ? Stats.GroundDeceleration : Stats.AirDeceleration;
+        float acc = PC.IsGrounded ? Stats.GroundAcceleration : Stats.AirAcceleration;
+        float dec = PC.IsGrounded ? Stats.GroundDeceleration : Stats.AirDeceleration;
 
         Move(acc, dec, Input.MoveDir);
     }
@@ -55,7 +55,7 @@ public class PlayerMove : BasePlayerState
             Rb.velocity = new Vector2(MoveVelocity.x, Rb.velocity.y);
 
             // Flip sprite se necessario
-            PSM.FlipSprite(moveInput.x);
+            PC.FlipSprite(moveInput.x);
         }
         else // nessun input → decelerazione
         {

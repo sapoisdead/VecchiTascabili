@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerIdle : BasePlayerState
 {
-    public PlayerIdle(PlayerStateMachine psm) : base(psm) { }
+    public PlayerIdle(CharacterController pc) : base(pc) { }
 
     public override void Enter()
     {
@@ -16,28 +16,28 @@ public class PlayerIdle : BasePlayerState
 
     public override void Update()
     {
-        if (!PSM.IsGrounded)
+        if (!PC.IsGrounded)
         {
-            PSM.ChangeState(PSM.FallState);
+            PC.ChangeState(PC.FallState);
             return;
         }
 
         if (Input.MoveDir != Vector2.zero)
         {
-            PSM.ChangeState(PSM.MoveState);
+            PC.ChangeState(PC.MoveState);
             return;
         }
 
-        if (Input.IsJumpPressed && PSM.IsGrounded)
+        if (Input.IsJumpPressed && PC.IsGrounded)
         {
-            PSM.ChangeState(PSM.JumpState);
+            PC.ChangeState(PC.JumpState);
             return;
         }
     }
 
     public override void FixedUpdate()
     {
-        float decelleration = PSM.IsGrounded ? Stats.GroundDeceleration : Stats.AirDeceleration;
+        float decelleration = PC.IsGrounded ? Stats.GroundDeceleration : Stats.AirDeceleration;
         MoveVelocity = Vector2.Lerp(MoveVelocity, Vector2.zero, decelleration * Time.fixedDeltaTime);
         Rb.velocity = new Vector2(MoveVelocity.x, Rb.velocity.y);
     }

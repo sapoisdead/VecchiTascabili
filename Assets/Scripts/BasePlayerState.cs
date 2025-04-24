@@ -2,22 +2,22 @@ using UnityEngine;
 
 public abstract class BasePlayerState : IPlayerState
 {
-    protected readonly PlayerStateMachine PSM;
+    protected readonly CharacterController PC;
 
     //  Accessors “live” invece di copie
-    protected GameInput Input => PSM.Input;
-    protected SOMovementStats Stats => PSM.MovementStats;
-    protected Rigidbody2D Rb => PSM.Rb;
+    protected IInputProvider Input => PC.Input;
+    protected SOMovementStats Stats => PC.MovementStats;
+    protected Rigidbody2D Rb => PC.Rb;
 
     protected Vector2 MoveVelocity
     {
-        get => PSM.MoveVelocity;
-        set => PSM.MoveVelocity = value;
+        get => PC.MoveVelocity;
+        set => PC.MoveVelocity = value;
     }
 
-    protected BasePlayerState(PlayerStateMachine psm)
+    protected BasePlayerState(CharacterController pc)
     {
-        PSM = psm;
+        PC = pc;
     }
 
     public abstract void Enter();
